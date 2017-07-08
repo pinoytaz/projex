@@ -1,0 +1,54 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Select Payment Type</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div *ngIf="!isNewPaymentType">
+    <ion-grid>
+        <ion-row class="list-col-headers">
+            <ion-col col-2 ><b>Project:</b></ion-col>
+            <ion-col col-2 *ngIf="project.projectId!=0">{{project.projectId}}</ion-col>
+            <ion-col col-8 >{{project.projectName}}</ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-list>
+        <button ion-item *ngFor="let paymentType of plist" (click)="select(paymentType)">
+        <ion-row class="">
+            <ion-col col-4>{{paymentType.paymentTypeName}}</ion-col>
+        </ion-row>
+            
+            
+    </button>
+        <button ion-item *ngFor="let paymentType of noProjectPlist" (click)="select(paymentType)">
+        <ion-row class="">
+            <ion-col col-4>{{paymentType.paymentTypeName}}</ion-col>
+        </ion-row>
+            
+            
+    </button>
+    </ion-list>
+    </div>
+    <div *ngIf="isNewPaymentType">
+         <form *ngIf="form" [formGroup]="form" (ngSubmit)="newPaymentType()">
+        <button ion-button full type="submit" [disabled]="!isReadyToSave">
+        Done
+      </button>
+        <ion-list>
+      <ion-item>
+        <ion-input type="text" placeholder="Type Payment Type here then tap DONE. Ex: Amex 4994, Cash, Reimbursement" formControlName="name"></ion-input>
+      </ion-item>
+    </ion-list>
+        </form>
+    </div>
+</ion-content>

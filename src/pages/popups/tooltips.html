@@ -1,0 +1,22 @@
+<ion-content>
+    <ion-row *ngIf="page=='list-master'">
+        <ion-col>Tap the <b>-ADD RECEIPT-</b> button to add your first purchase.</ion-col>
+    </ion-row>
+    <ion-row *ngIf="page=='project-list'">
+        <ion-col>Tap <b>Project not associated with a project</b> if the purchase is not associated with a project.<br>
+        Tap <b>Project not found</b> to enter project name.</ion-col>
+    </ion-row>
+    <ion-row *ngIf="page=='payment-type-list'">
+        <ion-col>Tap <b>Reimbursement</b> if you paid with a personal card or cash.<br>
+        Tap <b>Payment type not found</b> to enter a new payment type.</ion-col>
+    </ion-row>
+    <ion-row *ngIf="page==4">
+        <ion-col>Tap the <b>-ADD RECEIPT-</b> button to add your first purchase.</ion-col>
+    </ion-row>
+    <ion-row *ngIf="page==5">
+        <ion-col>Tap the <b>-ADD RECEIPT-</b> button to add your first purchase.</ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col><i>Tap anywhere to close this.</i></ion-col>
+    </ion-row>
+</ion-content>

@@ -1,0 +1,53 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Select Project</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div *ngIf="!isNewProject">
+    <ion-grid>
+        <ion-row class="list-col-headers">
+            <ion-col col-4 (click)="doSort('projectId')">Project # &nbsp;<i primary class="fa {{sort.projectId}} fa-lg"></i></ion-col>
+            <ion-col col-4 (click)="doSort('projectName')">Project Name &nbsp;<i primary class="fa {{sort.projectName}} fa-lg"></i></ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-list>
+        <button ion-item *ngFor="let project of plist" (click)="select(project)">
+        <ion-row class="">
+            <ion-col col-4>{{project.projectId}}</ion-col>
+            <ion-col col-4>{{project.projectName}}</ion-col>
+        </ion-row>
+            
+            
+    </button>
+    </ion-list>
+    <button ion-button full (click)="noProject()">
+        Purchase not associated with a project
+      </button>
+    <button ion-button full (click)="isNewProject=true">
+        Project not found
+      </button>
+    </div>
+    <div *ngIf="isNewProject">
+         <form *ngIf="form" [formGroup]="form" (ngSubmit)="newProject()">
+        <button ion-button full type="submit" [disabled]="!isReadyToSave">
+        Done
+      </button>
+        <ion-list>
+      <ion-item>
+        <ion-input type="text" placeholder="Type Project Name here then tap DONE." formControlName="name"></ion-input>
+      </ion-item>
+    </ion-list>
+        </form>
+    </div>
+</ion-content>

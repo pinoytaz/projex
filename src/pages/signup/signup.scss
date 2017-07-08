@@ -1,3 +1,27 @@
 page-signup {
-
+        input {
+        padding: 5px;
+    }
+    .form-info {
+        padding: 10px;
+        font-size: 13pt;
+    }
+    .is-accountant {
+        text-align: center;
+        label {
+            font-size: 11pt;
+        }
+    }
+    .confirm {
+        color:green;
+    }
+    .sub-title {
+        text-align: center;
+        font-size: 14pt;
+        padding: 10px;
+        span {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+    }
 }

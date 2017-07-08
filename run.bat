@@ -1,0 +1,1 @@
+cordova run android --target=Nexus_4_API_23

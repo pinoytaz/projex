@@ -1,42 +1,52 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{ 'SIGNUP_TITLE' | translate }}</ion-title>
-  </ion-navbar>
+<ion-navbar>
+    <ion-title><div class="signup-title"><div class="app-logo"></div>&nbsp;ProjEx</div></ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
+    <div class="sub-title">Signup for your <span>FREE</span> account</div>
   <form (submit)="doSignup()">
     <ion-list>
-
       <ion-item>
-        <ion-label fixed>{{ 'NAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.name" name="name"></ion-input>
+        <label for="firstname" >First Name</label>
+        <input type="text" [(ngModel)]="account.firstname" placeholder="Please input your first name" required name="firstname" (blur) = "changeCase($event)">
+      </ion-item>
+      <ion-item>
+        <label >Last Name</label>
+        <input type="text" [(ngModel)]="account.lastname" placeholder="Please input your last name" required name="lastname" (blur) = "changeCase($event)">
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <label >Enter your email address</label>
+        <input type="email" [(ngModel)]="account.email" placeholder="Please input your email address" required name="email">
       </ion-item>
-
-      <!--
-      Want to add a Username? Here you go:
-
       <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
+        <label >Choose a password</label>
+        <input type="password" [(ngModel)]="account.password" required name="password">
       </ion-item>
-      -->
 
+              <ion-item>
+        <label >Retype your password &nbsp;<ion-icon class="confirm" name="checkmark-circle" *ngIf="isConfirmed()" ></ion-icon></label>
+        <input type="password" required [(ngModel)]="confirmPassword" name="confirmpassword">
+                  
+      </ion-item>
+        <div class="form-info">
+            We need your Accountant's email address so we can send them your expense reports.
+        </div>
+        <ion-item class="is-accountant">
+            <input type="checkbox" id="isAccountant" [(ngModel)]="account.isAccountant" [ngModelOptions]="{standalone: true}">
+            <label for="isAccountant">I am the Accountant</label>
+        </ion-item>
       <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        <label >Accountant's Email Address</label>
+        <input type="email" [(ngModel)]="account.accountantEmail" name="accountantEmail">
       </ion-item>
-
       <div padding>
-        <button ion-button color="primary" block>{{ 'SIGNUP_BUTTON' | translate }}</button>
+        <button ion-button color="primary" block>Start using ProjEx now</button>
       </div>
 
     </ion-list>

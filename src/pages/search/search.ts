@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { ItemDetailPage } from '../item-detail/item-detail';
 
-import { Item } from '../../models/item';
+import { Purchase } from '../../models/purchase';
 
-import { Items } from '../../providers/providers';
+import { Purchases } from '../../providers/providers';
 
 
 @Component({
@@ -14,9 +13,9 @@ import { Items } from '../../providers/providers';
 })
 export class SearchPage {
   
-  currentItems: any = [];
+  pendingPurchases: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public purchases: Purchases) { }
 
   /**
    * Perform a service for the proper items.
@@ -24,10 +23,10 @@ export class SearchPage {
   getItems(ev) {
     let val = ev.target.value;
     if (!val || !val.trim()) {
-      this.currentItems = [];
+      this.pendingPurchases = [];
       return;
     }
-    this.currentItems = this.items.query({
+    this.pendingPurchases = this.purchases.query({
       name: val
     });
   }
@@ -35,10 +34,8 @@ export class SearchPage {
   /**
    * Navigate to the detail page for this item.
    */
-  openItem(item: Item) {
-    this.navCtrl.push(ItemDetailPage, {
-      item: item
-    });
+  openItem(purchase: Purchase) {
+    
   }
 
 }

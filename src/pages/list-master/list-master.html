@@ -1,35 +1,38 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{ 'LIST_MASTER_TITLE' | translate }}</ion-title>
+    <ion-navbar>
+        <ion-title>View/Edit Purchases</ion-title>
 
-    <ion-buttons end>
-      <button ion-button icon-only (click)="addItem()">
-        <ion-icon name="add"></ion-icon>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="logout()">
+        <ion-icon name="exit"></ion-icon>
       </button>
-    </ion-buttons>
-  </ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 <ion-content>
-
-  <ion-list>
-    <ion-item-sliding *ngFor="let item of currentItems">
-      <button ion-item (click)="openItem(item)">
-        <ion-avatar item-start>
-          <img [src]="item.profilePic" />
-        </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+    <button ion-button full (click)="addPurchase()" >
+        - ADD A RECEIPT -
       </button>
+    <ion-grid>
+        <ion-row class="list-col-headers">
+            <ion-col col-4 (click)="doSort('date')">Date &nbsp;<i primary class="fa {{sort.date}} fa-lg"></i></ion-col>
+            <ion-col col-4 (click)="doSort('vendor')">Vendor &nbsp;<i primary class="fa {{sort.vendor}} fa-lg"></i></ion-col>
+            <ion-col col-4>Amount</ion-col>
+        </ion-row>
+    </ion-grid>
 
-      <ion-item-options>
-        <button ion-button color="danger" (click)="deleteItem(item)">
-          {{ 'DELETE_BUTTON' | translate }}
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+    <ion-list>
+        <button ion-item *ngFor="let purchase of plist" (click)="viewPurchase(purchase)">
+         <ion-grid>
+        <ion-row class="purchases">
+            <ion-col col-4>{{purchase.date | date:'MM/dd/yyyy'}}</ion-col>
+            <ion-col col-4>{{purchase.vendor}}</ion-col>
+            <ion-col col-4>{{purchase.amount | currency:'USD':true:'1.2-2'}}</ion-col>
+        </ion-row>
+    </ion-grid> 
+    </button>
+    </ion-list>
 </ion-content>

@@ -1,0 +1,24 @@
+<ion-header>
+<ion-navbar>
+    
+  <ion-title><div class="signup-title"><div class="app-logo"></div>&nbsp;ProjEx</div></ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <div class="sub-title"></div>
+  <form (submit)="send()">
+    <ion-list>
+<div class="sub-title">
+        To reset your password please tell us the email address associated with your account. We'll email you a link to reset it.
+        </div>
+      <ion-item>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="Email Address">
+      </ion-item>
+      <div padding>
+        <button ion-button color="primary" block>SIGN IN</button>
+      </div>
+    </ion-list>
+  </form>
+</ion-content>

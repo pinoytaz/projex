@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/v2/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,3 +12,88 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+@import "../theme/scss/font-awesome"; 
+@font-face { font-family: 'FontAwesome'; 
+    src: url('../assets/fonts/fontawesome-webfont.eot?v=#{$fa-version}');
+    src: url('../assets/fonts/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
+    url('../assets/fonts/fontawesome-webfont.woff2?v=#{$fa-version}') format('woff2'),
+    url('../assets/fonts/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'),
+    url('../assets/fonts/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'),
+    url('../assets/fonts/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg'); 
+    font-weight: normal; 
+    font-style: normal; }
+
+$placeholder-font-size: 10pt;
+.app-logo {
+    margin: auto;
+    background: url('../assets/img/appicon.png') no-repeat transparent;
+    background-size: 100%;
+    width: 42px;
+    height: 42px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.signup-title {
+    color: #ffffff;
+    padding: 3px 0;
+    font-size: 28px;
+}
+
+ion-title {
+    background-color: #000000;
+    text-align: center;
+    color: #ffffff;
+}
+
+form {
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        display: block;
+        clear: both;
+        width: 100%;
+    }
+    ::-webkit-input-placeholder {
+   text-align: center;
+        font-size: $placeholder-font-size;
+    }
+
+    :-moz-placeholder { /* Firefox 18- */
+       text-align: center;  
+        font-size: $placeholder-font-size;
+    }
+
+    ::-moz-placeholder {  /* Firefox 19+ */
+       text-align: center;  
+        font-size: $placeholder-font-size;
+    }
+
+    :-ms-input-placeholder {  
+       text-align: center;
+        font-size: $placeholder-font-size;
+    }
+}
+
+.item-inner {
+    border: none !important;
+}
+
+.sub-title {
+        text-align: center;
+        font-size: 14pt;
+        padding: 10px;
+        span {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+    }
+
+.toolbar-background {
+  background-color: #000000;
+}
+
+.toolbar-title {
+    color: #ffffff;
+}

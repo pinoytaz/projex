@@ -1,0 +1,49 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Select Codes</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <div *ngIf="!isNewCostCode">
+        <ion-grid>
+            <ion-row class="list-col-headers">
+                <ion-col col-4><b>Project:</b></ion-col>
+                <ion-col col-8>{{project.projectId}} {{project.projectName}}</ion-col>
+            </ion-row>
+            <ion-row class="list-col-headers">
+                <ion-col col-4><b>Payment Type:</b></ion-col>
+                <ion-col col-8>{{paymentType.paymentTypeName}}</ion-col>
+            </ion-row>
+        </ion-grid>
+        <button ion-button full (click)="done()" [disabled]="!isReadyToSave">
+        Done
+      </button>
+        <ion-list>
+            <ion-item *ngFor="let costCode of plist">
+                <ion-label>{{costCode.costCodeId}} {{costCode.costCodeName}}</ion-label>
+                <ion-checkbox item-right [(ngModel)]="costCode.checked" (ionChange)="validate(costCode)"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+    </div>
+    <div *ngIf="isNewCostCode">
+        <form *ngIf="form" [formGroup]="form" (ngSubmit)="newCostCode()">
+            <button ion-button full type="submit" [disabled]="!isReadyToSave">
+        Done
+      </button>
+            <ion-list>
+                <ion-item>
+                    <ion-input type="text" placeholder="Type Description of purchase here then tap DONE." formControlName="name"></ion-input>
+                </ion-item>
+            </ion-list>
+        </form>
+    </div>
+</ion-content>

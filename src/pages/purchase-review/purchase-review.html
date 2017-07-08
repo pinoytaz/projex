@@ -1,0 +1,50 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Review &amp; Submit</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col><b>Project:</b></ion-col>
+            <ion-col *ngIf="project.projectId!=0">{{project.projectId}}</ion-col>
+            <ion-col> {{project.projectName}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col><b>Payment Type:</b></ion-col>
+            <ion-col>{{paymentType.paymentTypeName}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-8><b>Cost Code or Description</b></ion-col>
+            <ion-col col-4><b>Amt</b></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let cost of costs">
+            <ion-col col-8>{{cost.desc}}</ion-col>
+            <ion-col col-4 style="text-align:right">{{cost.amount | currency:'USD':true:'1.2-2'}}</ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col col-8>Sales Tax</ion-col>
+            <ion-col col-4 style="text-align:right">{{salestax | currency:'USD':true:'1.2-2'}}</ion-col>
+        </ion-row>
+        <ion-row justify-content-center>
+             <img id="image" [src]="purchase.imageData" />
+        </ion-row>
+        <ion-row>
+            <ion-col col-size-4><button ion-button block color="light" (click)="retake()">Retake Photo of Receipt</button></ion-col>
+            <ion-col><button ion-button block (click)="submit()">Confirm and Submit</button></ion-col>
+        </ion-row>
+    </ion-grid>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitPurchase()">
+        <input name="email" type="hidden" value="{{userEmail}}">
+        <input name="stamp" type="hidden" value="{{currentDate | date:'Y-m-d H:m:s'}}">
+    </form>
+</ion-content>

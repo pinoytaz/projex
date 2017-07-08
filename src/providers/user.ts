@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Api } from './api';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import { Storage } from '@ionic/storage';
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -26,8 +27,9 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class User {
   _user: any;
-
-  constructor(public http: Http, public api: Api) {
+errorMessage:string='';
+status:string='';
+  constructor(public http: Http, public api: Api, public storage: Storage) {
   }
 
   /**
@@ -35,15 +37,23 @@ export class User {
    * the user entered on the form.
    */
   login(accountInfo: any) {
-    let seq = this.api.post('login', accountInfo).share();
+      this.errorMessage="";
+      var payload: string = "";
+    payload = "data=" + accountInfo.email + "," + accountInfo.password;
+
+    let seq = this.api.post('verify/', payload);
 
     seq
       .map(res => res.json())
       .subscribe(res => {
         // If the API returned a successful response, mark the user as logged in
-        if (res.status == 'success') {
-          this._loggedIn(res);
+          this.status=res.status.toLowerCase();
+        if (this.status == 'success') {
+        
+          this._loggedIn(accountInfo.email);
+            
         } else {
+          this.errorMessage='Username/Password is incorrect.';
         }
       }, err => {
         console.error('ERROR', err);
@@ -57,14 +67,14 @@ export class User {
    * the user entered on the form.
    */
   signup(accountInfo: any) {
-    let seq = this.api.post('signup', accountInfo).share();
+    let seq = this.api.post('adduser/', accountInfo);
 
     seq
       .map(res => res.json())
       .subscribe(res => {
         // If the API returned a successful response, mark the user as logged in
         if (res.status == 'success') {
-          this._loggedIn(res);
+          
         }
       }, err => {
         console.error('ERROR', err);
@@ -73,17 +83,38 @@ export class User {
     return seq;
   }
 
+    /**
+   * Send a POST request to our resetpw endpoint with the email address
+   * the user entered on the form.
+   */
+  reset(accountInfo: any) {
+    let seq = this.api.post('resetpssword/', accountInfo);
+
+    seq
+      .map(res => res.json())
+      .subscribe(res => {
+        // If the API returned a successful response
+        if (res.status == 'success') {
+        } else {
+        }
+      }, err => {
+        console.error('ERROR', err);
+      });
+
+    return seq;
+  }
   /**
    * Log the user out, which forgets the session
    */
   logout() {
     this._user = null;
+      this.storage.set('firsttime', false);
   }
 
   /**
    * Process a login/signup response to store user data
    */
-  _loggedIn(resp) {
-    this._user = resp.user;
+  _loggedIn(email) {
+    this._user = email;
   }
 }

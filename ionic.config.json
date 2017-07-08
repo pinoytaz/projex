@@ -1,5 +1,11 @@
 {
   "name": "projex",
   "app_id": "",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/projex",
+      "proxyUrl": "http://willcate.com/projex"
+    }
+  ]
 }

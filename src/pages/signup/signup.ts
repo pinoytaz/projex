@@ -4,9 +4,6 @@ import { NavController, ToastController } from 'ionic-angular';
 import { MainPage } from '../../pages/pages';
 import { User } from '../../providers/user';
 
-import { TranslateService } from '@ngx-translate/core';
-
-
 @Component({
   selector: 'page-signup',
   templateUrl: 'signup.html'
@@ -15,36 +12,44 @@ export class SignupPage {
   // The account fields for the login form.
   // If you're using the username field with or without email, make
   // sure to add it to the type
-  account: { name: string, email: string, password: string } = {
-    name: 'Test Human',
-    email: 'test@example.com',
-    password: 'test'
+  confirmPassword: string;
+  account: {
+    firstname: string,
+    lastname: string,
+    isAccountant: boolean,
+    accountantEmail: string,
+    email: string, password: string
+  } = {
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    isAccountant: false,
+    accountantEmail: ''
   };
-
-  // Our translated text strings
-  private signupErrorString: string;
 
   constructor(public navCtrl: NavController,
     public user: User,
-    public toastCtrl: ToastController,
-    public translateService: TranslateService) {
+    public toastCtrl: ToastController) {
 
-    this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
-      this.signupErrorString = value;
-    })
   }
-
+  isConfirmed(): boolean {
+    return this.account.password == this.confirmPassword;
+  }
+  
+changeCase(event){
+  this.account[event.target.name] = this.account[event.target.name].charAt(0).toUpperCase() + this.account[event.target.name].toLowerCase().slice(1);
+}
   doSignup() {
-    // Attempt to login in through our User service
-    this.user.signup(this.account).subscribe((resp) => {
+    // Attempt to signup in through our User service
+    var payload: string = "";
+    payload = "data=" + this.account.email + "," + this.account.password + "," + this.account.firstname + "," + this.account.lastname + "," + (this.account.accountantEmail==""?'none':this.account.accountantEmail) +"," + (this.account.isAccountant?'accountant':'field-emp');
+    this.user.signup(payload).subscribe((resp) => {
       this.navCtrl.push(MainPage);
     }, (err) => {
-
-      this.navCtrl.push(MainPage); // TODO: Remove this when you add your signup endpoint
-
       // Unable to sign up
       let toast = this.toastCtrl.create({
-        message: this.signupErrorString,
+        message: "Unable to complete the signup." + err.statusText,
         duration: 3000,
         position: 'top'
       });

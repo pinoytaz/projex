@@ -1,0 +1,17 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Capture Receipt</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <img id="image" (load)="analyze()" [src]="imageData"/>
+</ion-content>

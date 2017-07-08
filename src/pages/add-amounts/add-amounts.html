@@ -1,0 +1,55 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>Add Amounts</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="home()">
+        <ion-icon name="home"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="review()">
+        <ion-grid>
+            <ion-row>
+                <ion-col><b>Project:</b></ion-col>
+              <ion-col *ngIf="project.projectId!=0">{{project.projectId}}</ion-col>
+                <ion-col> {{project.projectName}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col><b>Payment Type:</b></ion-col>
+                <ion-col>{{paymentType.paymentTypeName}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-8><b>Balance to Distribute:</b></ion-col>
+                <ion-col col-4>
+                    <ion-input class="block-input" type="number" placeholder="" formControlName="balance" [(ngModel)]="balance" (blur)="resetAmounts()"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-8><b>Cost Code or Description</b></ion-col>
+                <ion-col col-4><b>Amt</b></ion-col>
+            </ion-row>
+            <ion-row *ngFor="let costCode of costcodes">
+                <ion-col col-8>{{costCode.costCodeName}}</ion-col>
+                <ion-col col-4>
+                    <ion-input class="block-input" type="number" placeholder="" formControlName="cc_{{costCode.costCodeId}}" (focus)="showCalc($event)"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-8>Sales Tax</ion-col>
+                <ion-col col-4>
+                    <ion-input class="block-input" type="number" placeholder="" formControlName="salestax" (focus)="showCalc($event)"></ion-input>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <button ion-button full type="submit" [disabled]="!isReadyToSave">
+        Done
+      </button>
+    </form>
+    <img id="image" (load)="analyze()" [src]="purchase.imageData" style="opacity:0"/>
+</ion-content>

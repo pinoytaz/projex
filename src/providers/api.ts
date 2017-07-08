@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, URLSearchParams } from '@angular/http';
+import { File } from '@ionic-native/file';
+import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 
 /**
  * Api is a generic REST Api handler. Set your API url first.
  */
 @Injectable()
 export class Api {
-  url: string = 'https://example.com/api/v1';
+//    url: string = 'http://localhost:8100/projex';
+     url: string = 'http://willcate.com/projex';
 
   constructor(public http: Http) {
   }
@@ -32,7 +35,9 @@ export class Api {
   }
 
   post(endpoint: string, body: any, options?: RequestOptions) {
-    return this.http.post(this.url + '/' + endpoint, body, options);
+    var headers = new Headers();
+      headers.append('Content-Type','application/x-www-form-urlencoded');
+          return this.http.post(this.url + '/' + endpoint, body, {headers:headers});
   }
 
   put(endpoint: string, body: any, options?: RequestOptions) {
