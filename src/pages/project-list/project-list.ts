@@ -158,8 +158,8 @@ export class ProjectListPage {
       this.camera.getPicture({
         destinationType: dest,
         quality: 40,
-//        targetWidth: 512,
-//        targetHeight: 512,
+        targetWidth: 1024,
+        targetHeight: 1024,
         cameraDirection: 0, //back camera
         allowEdit: true,
         saveToPhotoAlbum: false,
