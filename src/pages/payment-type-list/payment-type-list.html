@@ -16,9 +16,9 @@
     <div *ngIf="!isNewPaymentType">
     <ion-grid>
         <ion-row class="list-col-headers">
-            <ion-col col-2 ><b>Project:</b></ion-col>
-            <ion-col col-2 *ngIf="project.projectId!=0">{{project.projectId}}</ion-col>
-            <ion-col col-8 >{{project.projectName}}</ion-col>
+            <ion-col col-3 ><b>Project:</b></ion-col>
+            <ion-col col-3 *ngIf="project.projectId!=0">{{project.projectId}}</ion-col>
+            <ion-col col-6 >{{project.projectName}}</ion-col>
         </ion-row>
     </ion-grid>
 

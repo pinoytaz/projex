@@ -29,7 +29,7 @@ if (isset($_GET['cmd']) || isset($_POST['cmd']))  {
         $sql = sprintf('SELECT cost_id costCodeId, cost_code costCodeName FROM COSTCODES cc '.
                        'INNER JOIN COMPANIES c ON '.
                        'cc.comp_number = c.comp_number INNER JOIN USERS u ON '.
-                       'c.acct_email = u.acct_email '.
+                       'c.admin_email = u.acct_email '.
                        'WHERE u.email_addr = "%s"', $conn->real_escape_string($email));
 
         if ($result = $conn->query($sql)) {

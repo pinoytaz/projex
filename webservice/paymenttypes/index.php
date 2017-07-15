@@ -29,7 +29,7 @@ if (isset($_GET['cmd']) || isset($_POST['cmd']))  {
         $sql = sprintf('SELECT ptype_id paymentTypeId, ptype_desc paymentTypeName FROM PAYMENT_TYPES pt '.
                        'INNER JOIN COMPANIES c ON '.
                        'pt.comp_number = c.comp_number INNER JOIN USERS u ON '.
-                       'c.acct_email = u.acct_email '.
+                       'c.admin_email = u.acct_email '.
                        'WHERE u.email_addr = "%s"', $conn->real_escape_string($email));
 
         if ($result = $conn->query($sql)) {

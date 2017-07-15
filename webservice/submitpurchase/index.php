@@ -9,7 +9,8 @@ if (isset($_POST['email']))  {
 	$email = $_POST['email'];
 	$stamp = $_POST['stamp'];
 	$purch_data = $_POST['purch_data'];
-		
+	
+    
 	$uploadfile = $_FILES['jpeg_file']['tmp_name'];
 	// get the image orientation data
 	$exif = exif_read_data($uploadfile);

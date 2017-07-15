@@ -26,14 +26,16 @@ if (isset($_GET['cmd']) || isset($_POST['cmd']))  {
     $email = urldecode($_GET['email']);
     if($cmd=='list'){
         
-        $sql = sprintf('SELECT purchase_data, jpeg_data imageData FROM PURCHASES p '.
+        $sql = sprintf('SELECT purchase_id, purchase_data, when_submitted purchaseDate, jpeg_data imageData FROM PURCHASES p '.
                        'WHERE approved=0 and email_addr = "%s"', $conn->real_escape_string($email));
 
         if ($result = $conn->query($sql)) {
             $status = "Success";
           $rows=[];
             while($row = $result->fetch_assoc()){
-              array_push($rows,$row);
+              $imageBin = base64_encode(hex2bin($row['imageData']));
+              $purch = ['purchase_data'=>$row['purchase_data'],'imageData'=>$imageBin,'purchase_id'=>$row['purchase_id'],'purchaseDate'=>$row['purchaseDate']];
+              array_push($rows,$purch);
             }
             $statusMsg = $rows;
             /* free result set */

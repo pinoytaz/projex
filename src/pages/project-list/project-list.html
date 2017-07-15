@@ -13,11 +13,17 @@
 </ion-header>
 
 <ion-content>
+    <div *ngIf="ongoingCapture">
+      <ion-grid>
+        Capturing receipt...
+      </ion-grid>
+    </div>
+    <div *ngIf="!ongoingCapture">
     <div *ngIf="!isNewProject">
     <ion-grid>
         <ion-row class="list-col-headers">
             <ion-col col-4 (click)="doSort('projectId')">Project # &nbsp;<i primary class="fa {{sort.projectId}} fa-lg"></i></ion-col>
-            <ion-col col-4 (click)="doSort('projectName')">Project Name &nbsp;<i primary class="fa {{sort.projectName}} fa-lg"></i></ion-col>
+            <ion-col col-8 (click)="doSort('projectName')">Project Name &nbsp;<i primary class="fa {{sort.projectName}} fa-lg"></i></ion-col>
         </ion-row>
     </ion-grid>
 
@@ -25,10 +31,8 @@
         <button ion-item *ngFor="let project of plist" (click)="select(project)">
         <ion-row class="">
             <ion-col col-4>{{project.projectId}}</ion-col>
-            <ion-col col-4>{{project.projectName}}</ion-col>
+            <ion-col col-8>{{project.projectName}}</ion-col>
         </ion-row>
-            
-            
     </button>
     </ion-list>
     <button ion-button full (click)="noProject()">
@@ -50,4 +54,5 @@
     </ion-list>
         </form>
     </div>
+      </div>
 </ion-content>

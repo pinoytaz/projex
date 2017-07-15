@@ -17,14 +17,13 @@
         <ion-grid>
             <ion-row>
                 <ion-col><b>Project:</b></ion-col>
-              <ion-col *ngIf="project.projectId!=0">{{project.projectId}}</ion-col>
-                <ion-col> {{project.projectName}}</ion-col>
+              <ion-col><div *ngIf="project.projectId!=0">{{project.projectId}}</div> {{project.projectName}}</ion-col>
             </ion-row>
             <ion-row>
                 <ion-col><b>Payment Type:</b></ion-col>
                 <ion-col>{{paymentType.paymentTypeName}}</ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row *ngIf="hasBalance">
                 <ion-col col-8><b>Balance to Distribute:</b></ion-col>
                 <ion-col col-4>
                     <ion-input class="block-input" type="number" placeholder="" formControlName="balance" [(ngModel)]="balance" (blur)="resetAmounts()"></ion-input>

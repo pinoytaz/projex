@@ -28,19 +28,24 @@
             <ion-col col-4><b>Amt</b></ion-col>
         </ion-row>
         <ion-row *ngFor="let cost of costs">
-            <ion-col col-8>{{cost.desc}}</ion-col>
+            <ion-col col-8>{{cost.costCodeName}}</ion-col>
             <ion-col col-4 style="text-align:right">{{cost.amount | currency:'USD':true:'1.2-2'}}</ion-col>
         </ion-row>
         <ion-row>
             <ion-col col-8>Sales Tax</ion-col>
             <ion-col col-4 style="text-align:right">{{salestax | currency:'USD':true:'1.2-2'}}</ion-col>
         </ion-row>
+      <ion-row>
+            <ion-col col-8></ion-col>
+            <ion-col col-4 style="text-align:right;border-top: 1px solid #000000;font-weight: bold">{{purchase.amount | currency:'USD':true:'1.2-2'}}</ion-col>
+        </ion-row>
         <ion-row justify-content-center>
              <img id="image" [src]="purchase.imageData" />
         </ion-row>
         <ion-row>
-            <ion-col col-size-4><button ion-button block color="light" (click)="retake()">Retake Photo of Receipt</button></ion-col>
-            <ion-col><button ion-button block (click)="submit()">Confirm and Submit</button></ion-col>
+            <ion-col col-size-6><button ion-button block color="light" (click)="retake()" class="retake-button">Retake Photo of Receipt</button></ion-col>
+            <ion-col col-size-6 *ngIf="!viewOnly"><button ion-button block (click)="submit()">Confirm and Submit</button></ion-col>
+            <ion-col col-size-6 *ngIf="viewOnly"><button ion-button block (click)="edit()">Edit</button></ion-col>
         </ion-row>
     </ion-grid>
     <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitPurchase()">

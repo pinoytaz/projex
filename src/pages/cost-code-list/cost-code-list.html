@@ -16,12 +16,12 @@
     <div *ngIf="!isNewCostCode">
         <ion-grid>
             <ion-row class="list-col-headers">
-                <ion-col col-4><b>Project:</b></ion-col>
-                <ion-col col-8>{{project.projectId}} {{project.projectName}}</ion-col>
+                <ion-col col-6><b>Project:</b></ion-col>
+                <ion-col col-6>{{project.projectId}} {{project.projectName}}</ion-col>
             </ion-row>
             <ion-row class="list-col-headers">
-                <ion-col col-4><b>Payment Type:</b></ion-col>
-                <ion-col col-8>{{paymentType.paymentTypeName}}</ion-col>
+                <ion-col col-6><b>Payment Type:</b></ion-col>
+                <ion-col col-6>{{paymentType.paymentTypeName}}</ion-col>
             </ion-row>
         </ion-grid>
         <button ion-button full (click)="done()" [disabled]="!isReadyToSave">

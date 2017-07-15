@@ -34,6 +34,12 @@ export class Api {
     return this.http.get(this.url + '/' + endpoint, options);
   }
 
+  postJson(endpoint: string, body: any, options?: RequestOptions) {
+    var headers = new Headers();
+      headers.append('Content-Type','application/json');
+          return this.http.post(this.url + '/' + endpoint, body, {headers:headers});
+  }
+  
   post(endpoint: string, body: any, options?: RequestOptions) {
     var headers = new Headers();
       headers.append('Content-Type','application/x-www-form-urlencoded');

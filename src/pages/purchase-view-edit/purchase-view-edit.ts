@@ -13,6 +13,7 @@ export class PurchaseViewEditPage {
   constructor(public navCtrl: NavController, navParams: NavParams, purchases: Purchases) {
     this.purchase = navParams.get('purchase');
   }
+  
 home(){
     this.navCtrl.setRoot(MainPage);
 }

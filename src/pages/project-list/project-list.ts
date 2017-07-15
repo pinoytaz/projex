@@ -3,6 +3,7 @@ import { NavController, NavParams, ViewController, Platform, PopoverController, 
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
+import * as Tesseract from 'tesseract.js';
 
 import { Projects } from '../../providers/providers';
 import { Project } from '../../models/project';
@@ -26,35 +27,38 @@ export class ProjectListPage {
   purchase: Purchase = new Purchase({});
   form: FormGroup;
   isReadyToSave: boolean = false;
-  
+  fromEdit: boolean = false;
+
+  ts = {progress:null,result:null,error:null,resultorerror:null};
   constructor(public viewCtrl: ViewController, public plt: Platform, public storage: Storage, public popoverCtrl: PopoverController, public toastCtrl: ToastController,
     public navCtrl: NavController,
     public projects: Projects,
     formBuilder: FormBuilder,
     navParams: NavParams,
     public camera: Camera) {
-     
+
+    this.fromEdit = navParams.get('fromEdit');
     this.plist = [];
     this.oList = this.projects.query();
     this.oList.subscribe(res => {
-      
-        // If the API returned a successful response, retrive all projects returned
-if (res.status.toLowerCase() == 'success') {
-          if(res['body'].length>0){
-            for(let _p in res['body']){
-              this.plist.push( new Project(res['body'][_p]));
-            }
+
+      // If the API returned a successful response, retrive all projects returned
+      if (res.status.toLowerCase() == 'success') {
+        if (res['body'].length > 0) {
+          for (let _p in res['body']) {
+            this.plist.push(new Project(res['body'][_p]));
           }
-        } else {
         }
-      }, err => {
-        let toast = this.toastCtrl.create({
-          message: "Unable to fetch the projects.",
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-    }, ()=> console.log('dne'));
+      } else {
+      }
+    }, err => {
+      let toast = this.toastCtrl.create({
+        message: "Unable to fetch the projects.",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    }, () => console.log('dne'));
     //    this.plist = this.projects.query();
     this.form = formBuilder.group({
       name: ['', Validators.required]
@@ -71,10 +75,12 @@ if (res.status.toLowerCase() == 'success') {
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
-    this.viewCtrl.setBackButtonText('Purchases');
+    //    this.viewCtrl.setBackButtonText('Purchases');
   }
   ionViewWillEnter() {
-    this.getPicture();
+    if (!this.fromEdit) {
+      this.getPicture();
+    }
   }
 
   showtip() {
@@ -151,10 +157,20 @@ if (res.status.toLowerCase() == 'success') {
       }
       this.camera.getPicture({
         destinationType: dest,
-        quality: 50,
-        allowEdit : true
+        quality: 40,
+//        targetWidth: 512,
+//        targetHeight: 512,
+        cameraDirection: 0, //back camera
+        allowEdit: true,
+        saveToPhotoAlbum: false,
+        correctOrientation: true
       }).then((imageData) => {
         //this.purchase.imageData = 'data:image/jpg;base64,' + imageData;
+        Tesseract.recognize(imageData)
+  .progress(message => console.log('progress:', message))
+          .catch(err => console.log('err:', err))
+        .then(result => console.log('result:' + result['text']))
+        .finally(resultOrError => console.log('resultOrError:', resultOrError));
         this.purchase.imageData = imageData;
       }, (err) => {
         alert('Unable to take photo');

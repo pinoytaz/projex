@@ -1,11 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ModalController, ViewController, PopoverController, ToastController
- } from 'ionic-angular';
-import {Observable} from 'rxjs/Observable';
+import {
+  NavController, NavParams, ModalController, ViewController,
+  PopoverController, ToastController, AlertController
+} from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Storage } from '@ionic/storage';
 
 import { ProjectListPage } from '../project-list/project-list';
-import { PurchaseViewEditPage } from '../purchase-view-edit/purchase-view-edit';
+import { PurchaseReviewPage } from '../purchase-review/purchase-review';
 import { Purchases } from '../../providers/providers';
 import { Purchase } from '../../models/purchase';
 import { LoginPage } from '../login/login';
@@ -20,19 +22,31 @@ import { Tooltips } from '../popups/tooltips';
 })
 export class ListMasterPage {
   plist: Purchase[];
-  
+
   oList: Observable<any>;
   sort = { "date": "fa-unsorted", "vendor": "fa-unsorted" };
 
   constructor(public popoverCtrl: PopoverController, public viewCtrl: ViewController, public storage: Storage, public navParams: NavParams, public toastCtrl: ToastController,
-    public navCtrl: NavController, public purchases: Purchases, public modalCtrl: ModalController) {
+    public navCtrl: NavController, public purchases: Purchases, public modalCtrl: ModalController, private alertCtrl: AlertController) {
 
+    this.plist=[];
     this.oList = this.purchases.query();
     this.oList.subscribe(res => {
-        // If the API returned a successful response, mark the user as logged in
-        console.log(res);
-        if (res.status == 'success') {
-
+      // If the API returned a successful response, mark the user as logged in
+      if (res.status.toLowerCase() == 'success') {
+          if(res['body'].length>0){
+            for(let _p in res['body']){
+              var jsonData = JSON.parse(res['body'][_p]['purchase_data']);
+              this.plist.push( new Purchase({
+                vendor:'',
+                imageData:'data:image/jpeg;base64,' + res['body'][_p]['imageData'],
+                date: res['body'][_p]['purchaseDate'],
+                amount: jsonData['amount'],
+                purchase_id:res['body'][_p]['purchase_id'],
+                purchaseData: jsonData
+              }));
+            }
+          }
         } else {
         }
       }, err => {
@@ -42,8 +56,8 @@ export class ListMasterPage {
           position: 'top'
         });
         toast.present();
-    });
-//    this.oList.forEach(v => this.plist.push(v)).then();
+    }, ()=> console.log('dne'));
+    //    this.oList.forEach(v => this.plist.push(v)).then();
   }
 
   /**
@@ -54,11 +68,11 @@ export class ListMasterPage {
   }
   showtip() {
     this.storage.get('loadmaster').then((val) => {
-      if (val==null || val) {
+      if (val == null || val) {
         let popover = this.popoverCtrl.create(Tooltips, { page: 'list-master', top: 100 }, { showBackdrop: true });
         popover.present();
       }
-        this.storage.set('loadmaster', false);
+      this.storage.set('loadmaster', false);
     });
   }
 
@@ -95,7 +109,7 @@ export class ListMasterPage {
    * This will load the list of projects page
    */
   addPurchase() {
-    this.navCtrl.push(ProjectListPage);
+    this.navCtrl.push(ProjectListPage, {fromEdit:false});
   }
 
   /**
@@ -109,8 +123,13 @@ export class ListMasterPage {
    * Navigate to the detail page for this item.
    */
   viewPurchase(purchase: Purchase) {
-    this.navCtrl.push(PurchaseViewEditPage, {
-      purchase: purchase
+    var purchase_id = purchase['purchase_id'];
+    var stax = purchase['purchaseData']['salestax'];
+    var costs = purchase['purchaseData']['costs'];
+    var project = purchase['purchaseData']['project'];
+    var paymentType = purchase['purchaseData']['paymentType'];
+    this.navCtrl.push(PurchaseReviewPage, { stax: stax, costs: costs, purchase: purchase, project: project, paymentType: paymentType,purchase_id:purchase_id,
+      viewOnly:true
     });
   }
 
@@ -119,5 +138,30 @@ export class ListMasterPage {
    */
   logout() {
     this.navCtrl.setRoot(LoginPage);
+  }
+
+  confirmLogout() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm logout',
+      message: 'Do you want to continue?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            console.log('Buy clicked');
+            
+            this.logout();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

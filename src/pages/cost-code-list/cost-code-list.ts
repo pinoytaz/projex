@@ -75,7 +75,7 @@ export class CostCodeListPage {
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
-    this.viewCtrl.setBackButtonText('Payment Types');
+//    this.viewCtrl.setBackButtonText('Payment Types');
   }
 
 ionViewWillEnter(){

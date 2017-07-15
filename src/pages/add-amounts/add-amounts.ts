@@ -30,7 +30,8 @@ export class AddAmountsPage {
   costcodes: Array<CostCode>;
     balance:number;
   origBalance = 0;
-    
+  hasBalance:boolean = false;
+  
   constructor(public loadingCtrl: LoadingController, public viewCtrl: ViewController, public navCtrl: NavController, formBuilder: FormBuilder, navParams: NavParams,
     public popoverCtrl: PopoverController) {
     this.purchase = navParams.get('purchase');
@@ -54,19 +55,25 @@ export class AddAmountsPage {
 
   /* View load event */
   ionViewDidLoad() {
-    this.viewCtrl.setBackButtonText('Cost Codes');
+//    this.viewCtrl.setBackButtonText('Cost Codes');
   }
 
   /* Update the balance whenever amounts are inputted to the cost codes*/
   updateBalance() {
+
     var subtotal = 0;
     var self=this;
     this.costcodes.forEach(cc => {
       subtotal += parseFloat((self.form.controls['cc_' + cc['costCodeId']].value == "" ? 0 : self.form.controls['cc_' + cc['costCodeId']].value));
     });
     subtotal += parseFloat((self.form.controls['salestax'].value == "" ? 0 : self.form.controls['salestax'].value));
+  if(this.hasBalance){
     this.balance = this.origBalance - subtotal;
-this.isReadyToSave=(this.balance==0);
+    this.isReadyToSave=(this.balance==0);
+}else{
+  this.origBalance = subtotal;
+  this.isReadyToSave = true;
+}
   }
 
   home() {
@@ -84,15 +91,15 @@ this.isReadyToSave=(this.balance==0);
     var costs = [];
     this.costcodes.forEach(cc => {
       costs.push({
-        costcode: cc['costCodeId'],
-        desc: cc['costCodeName'],
+        costCodeId: cc['costCodeId'],
+        costCodeName: cc['costCodeName'],
         amount: this.form.controls['cc_' + cc['costCodeId']].value
       });
     });
     this.purchase['amount'] = this.origBalance;
 
-    if (this.balance == 0) {
-      this.navCtrl.push(PurchaseReviewPage, { stax: this.form.controls['salestax'].value, costs: costs, purchase: this.purchase, project: this.project, paymentType: this.paymentType });
+    if (this.balance == 0 || !this.hasBalance) {
+      this.navCtrl.push(PurchaseReviewPage, { stax: this.form.controls['salestax'].value, costs: costs, purchase: this.purchase, project: this.project, paymentType: this.paymentType, viewOnly:false });
     } else {
       alert('Amounts does not match. Please check.');
     }
@@ -107,7 +114,14 @@ this.isReadyToSave=(this.balance==0);
     /* Use OCRAD function to read the image loaded at the hidden img tag */
     (<any>window).OCRAD(document.getElementById('image'), text => {
       loader.dismissAll();
-      console.log(text);
+  console.log(text);
+      var posTotal = text.toLowerCase().indexOf('total');
+      if(posTotal > -1){
+        this.hasBalance = true;
+        this.balance = parseFloat(text.substr(posTotal));
+}else{
+  this.hasBalance = false;
+}
     });
   }
 
