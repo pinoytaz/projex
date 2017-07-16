@@ -12,7 +12,6 @@ if (isset($_POST['data']))
 	
 	include 'include/db.conf.php';
 	include 'include/license_key.class.php';
-	 
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	

@@ -6,10 +6,14 @@ if (isset($_POST['email']))  {
 		
 	include 'include/db.conf.php';
 
+    include 'include/class.phpmailer.php';
+    include 'include/class.smtp.php';
+  
 	$email = $_POST['email'];
 	$stamp = $_POST['stamp'];
 	$purch_data = $_POST['purch_data'];
-
+    $cmd = ((isset($_POST['cmd']) && !empty(isset($_POST['cmd'])?isset($_POST['cmd']:"";  
+  
 	$uploadfile = $_FILES['jpeg_file']['tmp_name'];
 	// get the image orientation data
 	$exif = exif_read_data($uploadfile);
@@ -89,12 +93,16 @@ if (isset($_POST['email']))  {
     if ($result = $conn->query($sql)) {
         $row = $result->fetch_assoc();
         if($row['comp_num']<1){
+          $fmt = numfmt_create( 'en_US', NumberFormatter::CURRENCY );
+          
+          $pdata = json_decode($purch_data);
           $from = 'Projex Mailer DO NOT REPLY <projex@email.com>';
           $to = $row['acct_email'];
-          $subject="Expense from ".$row['first_name']." ".$row['last_name'];
+          $subject="<p>Expense from ".$row['first_name']." ".$row['last_name'];
+          
           $message="";
-          $message.=$row['first_name']." ".$row['last_name']." has submitted the following purchase from ProjEx mobile application.";
-          $message.="[Project Name]  [Payment Type]   [Selected Cost Code]    [Amt]     [Project Name]";
+          $message.=$row['first_name']." ".$row['last_name']." has submitted the following purchase from ProjEx mobile application.</p>";
+          $message.="<p>".$pdata->project->projectName."  ".$pdata->paymentType->paymentTypeName."   ".$pdata->costs[0]->costCodeName."    ".numfmt_format_currency($fmt, (float)$pdata->costs[0]->amount, "USD")."</p>";
           $message.="<a href='#'>CLICK HERE</a> to customize the way you receive this information";
           $message.="Features available with a FREE account:<br>";
           $message.="<ul><li>Allow or require approval of purchases</li>";
@@ -111,8 +119,22 @@ if (isset($_POST['email']))  {
           $headers[] = 'X-Mailer: PHP/' . phpversion();
           $headers[] = 'MIME-Version: 1.0';
           $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+          
+//          $success= mail($to ,$subject ,$message, implode("\r\n", $headers));
+          
+          $email = new PHPMailer();
+$email->From      = 'projex@email.com';
+$email->FromName  = 'Projex Mailer DO NOT REPLY';
+$email->Subject   = "Expense from ".$row['first_name']." ".$row['last_name'];
+$email->Body      = $message;
+$email->AddAddress( $to );
+$email->IsHTML(true);
+$file_to_attach = 'resizedfile.jpg';
 
-          $success= mail($to ,$subject ,$message, implode("\r\n", $headers));
+$email->AddAttachment( $file_to_attach , 'receipt.jpg' );
+
+$email->Send();
+          
         }
         $result->free();
       
@@ -124,7 +146,10 @@ if (isset($_POST['email']))  {
     }
   
 	$purch_data = $conn->real_escape_string($purch_data);
-	
+	if($cmd=="update"){
+      
+    }
+                                                                       
 	$sql = "INSERT INTO PURCHASES (email_addr,when_submitted,purchase_data,jpeg_data) VALUES (" . $sq . $email . $sq . $comma . $sq . $stamp . $sq . $comma . $sq . $purch_data . $sq . $comma . $sq . $img . $sq . ")";
 	
 	if ($conn->query($sql) === TRUE) {

@@ -103,11 +103,9 @@ export class PurchaseReviewPage {
         } else {
           alert(resp.body);
         }
-        loader.dismissAll();
       }, (err) => {
         alert("error" + JSON.stringify(err));
-        loader.dismissAll();
-      });
+      }, ).finally(resultOrError => loader.dismissAll());
   }
 
   /**
