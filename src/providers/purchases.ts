@@ -24,7 +24,7 @@ export class Purchases {
   }
 
   getPurchaseImage(id?: any) {
-    let params = 'data='+id;
+    let params = 'data=' + id;
     return this.api.post('getpurchaseimage/', params)
       .map(resp => resp.json());
   }
@@ -35,14 +35,12 @@ export class Purchases {
     seq
       .map(res => res.json())
       .subscribe(res => {
-        // If the API returned a successful response, mark the user as logged in
-        console.log(res);
         if (res.status == 'success') {
 
         } else {
         }
       }, err => {
-        console.error('ERROR', err);
+        console.error('ERROR[submit]', err);
       });
 
     return seq;

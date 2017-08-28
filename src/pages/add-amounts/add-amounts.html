@@ -17,7 +17,8 @@
         <ion-grid>
             <ion-row>
                 <ion-col><b>Project:</b></ion-col>
-              <ion-col><div *ngIf="project.projectId!=0">{{project.projectId}}</div> {{project.projectName}}</ion-col>
+                <ion-col>
+                    <div *ngIf="project.projectId!=0">{{project.projectId}}</div> {{project.projectName}}</ion-col>
             </ion-row>
             <ion-row>
                 <ion-col><b>Payment Type:</b></ion-col>
@@ -50,5 +51,6 @@
         Done
       </button>
     </form>
-    <img id="image" (load)="analyze()" [src]="purchase.imageData" style="opacity:0"/>
+    <!-- <img id="image" (load)="analyze()" [src]="purchase.imageData" style="opacity:0"/> -->
+    <img id="image" [src]="purchase.imageData" style="opacity:0" />
 </ion-content>

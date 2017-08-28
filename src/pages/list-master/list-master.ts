@@ -29,34 +29,34 @@ export class ListMasterPage {
   constructor(public popoverCtrl: PopoverController, public viewCtrl: ViewController, public storage: Storage, public navParams: NavParams, public toastCtrl: ToastController,
     public navCtrl: NavController, public purchases: Purchases, public modalCtrl: ModalController, private alertCtrl: AlertController) {
 
-    this.plist=[];
+    this.plist = [];
     this.oList = this.purchases.query();
     this.oList.subscribe(res => {
       // If the API returned a successful response, mark the user as logged in
       if (res.status.toLowerCase() == 'success') {
-          if(res['body'].length>0){
-            for(let _p in res['body']){
-              var jsonData = JSON.parse(res['body'][_p]['purchase_data']);
-              this.plist.push( new Purchase({
-                vendor:'',
-                imageData:'data:image/jpeg;base64,' + res['body'][_p]['imageData'],
-                date: res['body'][_p]['purchaseDate'],
-                amount: jsonData['amount'],
-                purchase_id:res['body'][_p]['purchase_id'],
-                purchaseData: jsonData
-              }));
-            }
+        if (res['body'].length > 0) {
+          for (let _p in res['body']) {
+            var jsonData = res['body'][_p]['purchase_data'];
+            this.plist.push(new Purchase({
+              vendor: '',
+              imageData: 'data:image/jpeg;base64,' + res['body'][_p]['imageData'],
+              date: res['body'][_p]['purchaseDate'],
+              amount: jsonData['amount'],
+              purchase_id: res['body'][_p]['purchase_id'],
+              purchaseData: jsonData
+            }));
           }
-        } else {
         }
-      }, err => {
-        let toast = this.toastCtrl.create({
-          message: "Unable to connect to network",
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-    }, ()=> console.log('dne'));
+      } else {
+      }
+    }, err => {
+      let toast = this.toastCtrl.create({
+        message: "Unable to connect to network",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    }, () => console.log('dne'));
     //    this.oList.forEach(v => this.plist.push(v)).then();
   }
 
@@ -94,7 +94,7 @@ export class ListMasterPage {
     } else {
       this.sort['date'] = 'fa-unsorted';
     }
-    this.plist.sort(function(a, b) {
+    this.plist.sort(function (a, b) {
       if (a[col] < b[col]) {
         return -1 * iOrder;
       }
@@ -109,7 +109,7 @@ export class ListMasterPage {
    * This will load the list of projects page
    */
   addPurchase() {
-    this.navCtrl.push(ProjectListPage, {fromEdit:false});
+    this.navCtrl.push(ProjectListPage, { fromEdit: false });
   }
 
   /**
@@ -128,8 +128,9 @@ export class ListMasterPage {
     var costs = purchase['purchaseData']['costs'];
     var project = purchase['purchaseData']['project'];
     var paymentType = purchase['purchaseData']['paymentType'];
-    this.navCtrl.push(PurchaseReviewPage, { stax: stax, costs: costs, purchase: purchase, project: project, paymentType: paymentType,purchase_id:purchase_id,
-      viewOnly:true
+    this.navCtrl.push(PurchaseReviewPage, {
+      stax: stax, costs: costs, purchase: purchase, project: project, paymentType: paymentType, purchase_id: purchase_id,
+      viewOnly: true
     });
   }
 
@@ -156,7 +157,7 @@ export class ListMasterPage {
           text: 'Logout',
           handler: () => {
             console.log('Buy clicked');
-            
+
             this.logout();
           }
         }

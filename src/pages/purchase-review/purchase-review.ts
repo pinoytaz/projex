@@ -24,7 +24,7 @@ export class PurchaseReviewPage {
   costs: any;
   salestax = 0;
   userEmail: string;
-  url: string = 'http://willcate.com/projex/submitpurchase/';
+  url: string = 'http://www.projectprohub.com/projex/services/submitpurchase/';
   fileTransfer: TransferObject = this.transfer.create();
   viewOnly: boolean = false;
 
@@ -103,9 +103,12 @@ export class PurchaseReviewPage {
         } else {
           alert(resp.body);
         }
+        loader.dismissAll();
       }, (err) => {
         alert("error" + JSON.stringify(err));
-      }, ).finally(resultOrError => loader.dismissAll());
+        loader.dismissAll();
+      });
+
   }
 
   /**
@@ -119,15 +122,15 @@ export class PurchaseReviewPage {
     this.navCtrl.setRoot(MainPage);
   }
   analyze() {
-    let loader = this.loadingCtrl.create({
-      content: 'I\'m trying to read your receipt. Please wait...'
-    });
-    loader.present();
-    (<any>window).OCRAD(document.getElementById('image'), text => {
-      loader.dismissAll();
-      console.log(text);
-      alert(text);
-    });
+    // let loader = this.loadingCtrl.create({
+    //   content: 'I\'m trying to read your receipt. Please wait...'
+    // });
+    // loader.present();
+    // (<any>window).OCRAD(document.getElementById('image'), text => {
+    //   loader.dismissAll();
+    //   console.log(text);
+    //   alert(text);
+    // });
   }
 
   getPicture() {

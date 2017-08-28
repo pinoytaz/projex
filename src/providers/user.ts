@@ -27,8 +27,8 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class User {
   _user: any;
-errorMessage:string='';
-status:string='';
+  errorMessage: string = '';
+  status: string = '';
   constructor(public http: Http, public api: Api, public storage: Storage) {
   }
 
@@ -37,8 +37,8 @@ status:string='';
    * the user entered on the form.
    */
   login(accountInfo: any) {
-      this.errorMessage="";
-      var payload: string = "";
+    this.errorMessage = "";
+    var payload: string = "";
     payload = "data=" + accountInfo.email + "," + accountInfo.password;
 
     let seq = this.api.post('verify/', payload);
@@ -47,16 +47,16 @@ status:string='';
       .map(res => res.json())
       .subscribe(res => {
         // If the API returned a successful response, mark the user as logged in
-          this.status=res.status.toLowerCase();
+        this.status = res.status.toLowerCase();
         if (this.status == 'success') {
-        
+
           this._loggedIn(accountInfo.email);
-            
+
         } else {
-          this.errorMessage='Username/Password is incorrect.';
+          this.errorMessage = 'Username/Password is incorrect.';
         }
       }, err => {
-        console.error('ERROR', err);
+        console.error('ERROR[login]', err);
       });
 
     return seq;
@@ -74,19 +74,19 @@ status:string='';
       .subscribe(res => {
         // If the API returned a successful response, mark the user as logged in
         if (res.status == 'success') {
-          
+
         }
       }, err => {
-        console.error('ERROR', err);
+        console.error('ERROR[signup]', err);
       });
 
     return seq;
   }
 
-    /**
-   * Send a POST request to our resetpw endpoint with the email address
-   * the user entered on the form.
-   */
+  /**
+ * Send a POST request to our resetpw endpoint with the email address
+ * the user entered on the form.
+ */
   reset(accountInfo: any) {
     let seq = this.api.post('resetpssword/', accountInfo);
 
@@ -98,7 +98,7 @@ status:string='';
         } else {
         }
       }, err => {
-        console.error('ERROR', err);
+        console.error('ERROR[reset]', err);
       });
 
     return seq;
@@ -108,7 +108,7 @@ status:string='';
    */
   logout() {
     this._user = null;
-      this.storage.set('firsttime', false);
+    this.storage.set('firsttime', false);
   }
 
   /**

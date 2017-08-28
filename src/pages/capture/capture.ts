@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, LoadingController } from 'ionic-angular';
-
 import { Camera } from '@ionic-native/camera';
+
 import { MainPage } from '../../pages/pages';
-import { ProjectListPage } from '../project-list/project-list';
 
 @Component({
   selector: 'page-capture',
@@ -11,7 +10,7 @@ import { ProjectListPage } from '../project-list/project-list';
 })
 export class CapturePage {
   OCRAD: any;
-imageData:any;
+  imageData: any;
   constructor(public loadingCtrl: LoadingController,
     public viewCtrl: ViewController,
     public navCtrl: NavController,
@@ -23,7 +22,7 @@ imageData:any;
    * The view loaded, let's query our items for the list
    */
   ionViewWillEnter() {
-      console.log('camera view loaded');
+    console.log('camera view loaded');
     this.getPicture();
   }
 
@@ -45,18 +44,18 @@ imageData:any;
       })
     } else {
       alert('Camera access is needed.');
-        this.navCtrl.pop();
+      this.navCtrl.pop();
     }
   }
-analyze() {
-    let loader = this.loadingCtrl.create({
-     content: 'I\'m trying to read your receipt. Please wait...'
-    });
-    loader.present();
-    (<any>window).OCRAD(document.getElementById('image'), text => {
-      loader.dismissAll();
-      console.log(text);
-    this.navCtrl.push(ProjectListPage,{imageData:this.imageData})
-    });
-  }
+  // analyze() {
+  //     let loader = this.loadingCtrl.create({
+  //      content: 'I\'m trying to read your receipt. Please wait...'
+  //     });
+  //     loader.present();
+  //     (<any>window).OCRAD(document.getElementById('image'), text => {
+  //       loader.dismissAll();
+  //       console.log(text);
+  //     this.navCtrl.push(ProjectListPage,{imageData:this.imageData})
+  //     });
+  //   }
 }
